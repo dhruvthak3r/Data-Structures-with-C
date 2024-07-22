@@ -30,7 +30,7 @@ int main()
 		printf("7.Insert a node before a specified node\n");
 		printf("8.Insert a node at a given position\n");
 		printf("9.Delete a node\n");
-        printf("10.Quit\n\n");
+                printf("10.Quit\n\n");
 		printf("Enter your choice : ");
 		scanf("%d",&choice);
         
@@ -64,7 +64,6 @@ int main()
 			printf("Enter the element to be inserted : ");
 			scanf("%d",&value);
 			printf("Enter the element after which to insert : ");
-            int newvalue;
 			scanf("%d",&newvalue);
 			head=InsertAfter(head,value,newvalue);
 			break;
