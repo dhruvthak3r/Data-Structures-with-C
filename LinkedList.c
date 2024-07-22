@@ -30,11 +30,11 @@ int main()
 		printf("7.Insert a node before a specified node\n");
 		printf("8.Insert a node at a given position\n");
 		printf("9.Delete a node\n");
-        printf("11.Quit\n\n");
+        printf("10.Quit\n\n");
 		printf("Enter your choice : ");
 		scanf("%d",&choice);
         
-        if(choice==11)
+        if(choice==10)
 			break;
 
 		switch(choice)
