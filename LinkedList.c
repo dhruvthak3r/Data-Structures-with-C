@@ -30,11 +30,12 @@ int main()
 		printf("7.Insert a node before a specified node\n");
 		printf("8.Insert a node at a given position\n");
 		printf("9.Delete a node\n");
-                printf("10.Quit\n\n");
+	        printf("10.reverse\n\n");
+                printf("11.Quit\n\n");
 		printf("Enter your choice : ");
 		scanf("%d",&choice);
         
-        if(choice==10)
+        if(choice==11)
 			break;
 
 		switch(choice)
@@ -86,6 +87,8 @@ int main()
 			scanf("%d",&value);
 			head=DeleteNode(head,value);	
 			break;
+		case 10:
+                       head=Reverse(head);
 		 default:
 			 printf("Wrong choice\n");
 		}
@@ -227,6 +230,18 @@ void display(struct Node *head)
         printf("->");
         temp=temp->next;
     }
+}
+struct Node *Reverse(struct Node *head){
+    struct Node *curr=head;
+    struct Node *prev=NULL;
+    while(curr!=NULL){
+        struct Node *temp=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=temp;
+    }
+    head=prev;
+    return head;
 }
 
 
