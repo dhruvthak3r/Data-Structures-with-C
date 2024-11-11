@@ -170,8 +170,7 @@ int height(struct treenode *root) {
     return 1 + max(left, right);
 }
 int max(int a, int b) {
-    if(a==b) return a;
-    if(a > b) return a;
+    if(a >= b) return a;
     return b;
 }
 struct treenode* mirror(struct treenode *node) {
