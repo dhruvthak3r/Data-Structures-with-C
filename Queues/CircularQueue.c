@@ -2,90 +2,74 @@
 #include<stdlib.h>
 #include<stdbool.h>
 #define max 10
-int q[max];
-int front=-1;
-int rear=-1;
+int queue[max];
+int rear = -1;
+int front = -1;
+bool isEmpty();
+bool isFull();
+void enqueue(int value);
+int dequeue();
+void display();
 int main(){
-    int choice, val;
-
-    while (1) {
-        printf("1. Display the queue elements\n");
-        printf("2. Enqueue\n");
-        printf("3. Dequeue\n");
-        printf("4. Print size\n");
-        printf("5. Quit\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-
-        if (choice == 5)
-            break;
-
-        switch (choice) {
+    int choice,data;
+    while(1){
+        printf("1.Enqueue\n");
+        printf("2.Dequeue\n");
+        printf("3.Display\n");
+        printf("4.Quit\n");
+        printf("enter your choice\n");
+        scanf("%d",&choice);
+        if(choice == 4) break;
+        switch(choice){
             case 1:
-                display();
-                break;
+            printf("enter the value you want to enqueue\n");
+            scanf("%d",&data);
+            enqueue(data);
+            break;
             case 2:
-                printf("Enter the element you want to add: ");
-                scanf("%d", &val);
-                Enqueue(val);
-                break;
+            if(dequeue() == -1) printf("the queue is empty \n");
+            else{
+                printf("the deleted element is : %d\n",dequeue());
+            }
+            break;
             case 3:
-                Dequeue();
-                break;
-            case 4:
-                printf("The size of the queue is %d\n", size());
-                break;
+            display();
+            break;
             default:
-                printf("Wrong choice\n");
+            printf("wrong choice\n");
         }
     }
-
-    return 0;
-}
-bool isFull(){
-    return (rear+1)%max==front;
 }
 bool isEmpty(){
-
-    return rear==front;
+    return rear == front;
 }
-void Enqueue(int val){
+bool isFull(){
+    return (rear + 1) % max == front;
+}
+void enqueue(int value){
     if(isFull()){
         printf("the queue is full\n");
         return;
     }
-    if(rear==-1) rear=0;
-    rear=(rear+1)%max;
-    q[rear]=val;
+    rear = (rear + 1) % max;
+    queue[rear] = value;
 }
-int Dequeue(){
+int dequeue(){
     if(isEmpty()){
-        printf("the queue is Empty\n");
-        exit(1);
+        return -1;
     }
-    int delete=q[front];
-    front=(front+1)%max;
-    return delete;
+    int deleted = queue[front];
+    front = (front + 1) % max;
+    return deleted;
 }
-void display() {
-    if (isEmpty()) {
-        printf("The queue is empty\n");
+void display(){
+    if(isEmpty()){
+        printf("the queue is empty\n");
         return;
     }
-    printf("The queue is: ");
-    for (int i = front; i != rear; i = (i + 1) % max) {
-        printf("%d ", q[i]);
+    printf("the queue is : \n");
+    for(int i=front ;i!=rear ; i=(i+1)%max){
+        printf("%d\n",queue[i]);
     }
-    printf("%d\n", q[rear]);
+    printf("%d\n",queue[rear]);
 }
-int size() {
-    if (isEmpty()) {
-        return 0;
-    }
-    if (rear >= front) {
-        return rear - front + 1;
-    } else {
-        return max - front + rear + 1;
-    }
-}
-
