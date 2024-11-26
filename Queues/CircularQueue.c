@@ -52,7 +52,7 @@ void enqueue(int value){
         return;
     }
     if(isEmpty()){
-        front = -1;
+        front = 0;
     }
     rear = (rear + 1) % max;
     queue[rear] = value;
@@ -65,8 +65,10 @@ int dequeue(){
         rear = -1;
         front = -1;
     }
-    int deleted = queue[front];
-    front = (front + 1) % max;
+    else{
+        int deleted = queue[front];
+        front = (front + 1) % max;
+    }
     return deleted;
 }
 void display(){
