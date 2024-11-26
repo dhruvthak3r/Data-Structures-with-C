@@ -51,12 +51,19 @@ void enqueue(int value){
         printf("the queue is full\n");
         return;
     }
+    if(isEmpty()){
+        front = -1;
+    }
     rear = (rear + 1) % max;
     queue[rear] = value;
 }
 int dequeue(){
     if(isEmpty()){
         return -1;
+    }
+    if(rear == front){
+        rear = -1;
+        front = -1;
     }
     int deleted = queue[front];
     front = (front + 1) % max;
