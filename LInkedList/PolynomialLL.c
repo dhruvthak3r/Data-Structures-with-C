@@ -1,120 +1,129 @@
-#include<stdio.h>
-#include<stdlib.h>
-struct node{
-    int power;
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int pow;
     int coeff;
     struct node *next;
 };
-void add(struct node *first,struct node *second);
-struct node *createpoly();
-struct node *createnode(int constant, int pow);
-void display();
-struct node *head = NULL;
-int main(){
-    struct node *first = createpoly();
-    struct node *second = createpoly();
-    add(first,second);
-    display();
+
+struct node *res_head = NULL;
+struct node *res_tail = NULL;
+
+struct node *createnode(int power, int coef) {
+    struct node *new_node = (struct node *)malloc(sizeof(struct node));
+    
+    new_node->pow = power;
+    new_node->coeff = coef;
+    new_node->next = NULL;
+    return new_node;
 }
 
-void add(struct node *first,struct node *second){
-    struct node *result = NULL;
-    struct node *result_tail = NULL;
-    while(first !=NULL && second!=NULL){
-        if(first -> power > second -> power){
-            struct node *newNode = createnode(first -> coeff , first -> power);
-            if(result == NULL) {
-                result = result_tail = newNode;
-            } else {
-                result_tail -> next = newNode;
-                result_tail = newNode;
-            }
-            first = first -> next;
-        }
-        else if(second -> power > first -> power){
-            struct node *newNode = createnode(second -> coeff , second -> power);
-            if(result == NULL) {
-                result = result_tail = newNode;
-            } else {
-                result_tail -> next = newNode;
-                result_tail = newNode;
-            }
-            second = second -> next;
-        }
-        else{
-            struct node *newNode = createnode((first -> coeff + second -> coeff) , first -> power);
-            if(result == NULL) {
-                result = result_tail = newNode;
-            } else {
-                result_tail -> next = newNode;
-                result_tail = newNode;
-            }
-            first = first -> next;
-            second = second -> next;
-        }
-    }
-    while(first !=NULL){
-        struct node *newNode = createnode(first -> coeff , first -> power);
-        if(result == NULL) {
-            result = result_tail = newNode;
+struct node *createpoly() {
+    int n, p, c;
+    struct node *head = NULL;
+    struct node *tail = NULL;
+    printf("Enter the number of nodes: \n");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter the coefficient: \n");
+        scanf("%d", &c);
+        printf("Enter the power: \n");
+        scanf("%d", &p);
+        struct node *newnode = createnode(p, c);
+        if (head == NULL) {
+            head = newnode;
+            tail = newnode;
         } else {
-            result_tail -> next = newNode;
-            result_tail = newNode;
+            tail->next = newnode;
+            tail = newnode;
         }
-        first = first -> next;
     }
-    while(second !=NULL){
-        struct node *newNode = createnode(second -> coeff , second -> power);
-        if(result == NULL) {
-            result = result_tail = newNode;
+    return head;
+}
+
+void add(struct node *first, struct node *second) {
+    while (first != NULL && second != NULL) {
+        if (first->pow > second->pow) {
+            struct node *newnode = createnode(first->pow, first->coeff);
+            if (res_head == NULL) {
+                res_head = newnode;
+                res_tail = newnode;
+            } else {
+                res_tail->next = newnode;
+                res_tail = newnode;
+            }
+            first = first->next;
+        } else if (second->pow > first->pow) {
+            struct node *newnode = createnode(second->pow, second->coeff);
+            if (res_head == NULL) {
+                res_head = newnode;
+                res_tail = newnode;
+            } else {
+                res_tail->next = newnode;
+                res_tail = newnode;
+            }
+            second = second->next;
         } else {
-            result_tail -> next = newNode;
-            result_tail = newNode;
+            struct node *newnode = createnode(first->pow, first->coeff + second->coeff);
+            if (res_head == NULL) {
+                res_head = newnode;
+                res_tail = newnode;
+            } else {
+                res_tail->next = newnode;
+                res_tail = newnode;
+            }
+            first = first->next;
+            second = second->next;
         }
-        second = second -> next;
     }
-    head = result;
-}
-
-struct node *createpoly(){
-    struct node *poly = NULL;
-    struct node *poly_tail = NULL; 
-    printf("enter the number of nodes\n");
-    int num;
-    scanf("%d",&num);
-    for(int i=0;i<num;i++){
-        printf("enter the co-efficient\n");
-        int newcoeff;
-        scanf("%d", &newcoeff);
-        printf("enter the power\n");
-        int newpow;
-        scanf("%d", &newpow);
-        struct node *newNode = createnode(newcoeff, newpow);
-        if(poly == NULL) {
-            poly = poly_tail = newNode;
+    while (first != NULL) {
+        struct node *newnode = createnode(first->pow, first->coeff);
+        if (res_head == NULL) {
+            res_head = newnode;
+            res_tail = newnode;
         } else {
-            poly_tail -> next = newNode;
-            poly_tail = newNode;
+            res_tail->next = newnode;
+            res_tail = newnode;
         }
+        first = first->next;
     }
-    return poly;
+    while (second != NULL) {
+        struct node *newnode = createnode(second->pow, second->coeff);
+        if (res_head == NULL) {
+            res_head = newnode;
+            res_tail = newnode;
+        } else {
+            res_tail->next = newnode;
+            res_tail = newnode;
+        }
+        second = second->next;
+    }
 }
 
-struct node *createnode(int constant, int pow){
-    struct node *temp = (struct node *)malloc(sizeof(struct node));
-    temp -> coeff = constant;
-    temp -> power = pow;
-    temp -> next = NULL;
-    return temp;
-}
-
-void display(){
-    struct node *ptr = head;
-    while(ptr != NULL){
-        printf("%dX^%d ", ptr->coeff, ptr->power);
-        ptr = ptr -> next;
-        if(ptr != NULL)
-            printf("+ ");
+void display(struct node *head) {
+    struct node *temp = head;
+    while (temp != NULL) {
+        printf("%dX^%d", temp->coeff, temp->pow);
+        temp = temp->next;
+        if (temp != NULL) {
+            printf(" + ");
+        }
     }
     printf("\n");
+}
+
+int main() {
+    printf("Create first polynomial:\n");
+    struct node *first = createpoly();
+    printf("Create second polynomial:\n");
+    struct node *second = createpoly();
+    printf("First polynomial: ");
+    display(first);
+    printf("Second polynomial: ");
+    display(second);
+    add(first, second);
+    printf("Resultant polynomial: ");
+    display(res_head);
+    return 0;
 }
