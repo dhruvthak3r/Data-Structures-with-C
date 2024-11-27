@@ -1,27 +1,47 @@
 #include <stdio.h>
 #define max 10
-
 int hashtable[max];
-
 int hash(int key);
 void insert(int key);
 int get(int key);
+void display();
 
 int main() {
-    insert(50);
-    insert(700);
-    insert(76);
-    insert(85);
-    insert(92);
-    insert(73);
-    insert(101);
-    printf("Value at key 50: %d\n", get(50));
-    printf("Value at key 700: %d\n", get(700));
-    printf("Value at key 76: %d\n", get(76));
-    printf("Value at key 85: %d\n", get(85));
-    printf("Value at key 92: %d\n", get(92));
-    printf("Value at key 73: %d\n", get(73));
-    printf("Value at key 101: %d\n", get(101));
+    int choice, key;
+
+    while (1) {
+        printf("\nMenu:\n");
+        printf("1. Insert\n");
+        printf("2. Retrieve\n");
+        printf("3. Display\n");
+        printf("4. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter key to insert: ");
+                scanf("%d", &key);
+                insert(key);
+                break;
+            case 2:
+                printf("Enter key to retrieve: ");
+                scanf("%d", &key);
+                int value = get(key);
+                if (value != -1)
+                    printf("Key %d found at index %d\n", key, value);
+                else
+                    printf("Key %d not found\n", key);
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
 
     return 0;
 }
@@ -39,6 +59,7 @@ void insert(int key) {
     if (i < max) {
         index = (index + i) % max;
         hashtable[index] = key;
+        printf("Key %d inserted at index %d\n", key, index);
     } else {
         printf("Hash table is full, cannot insert %d\n", key);
     }
@@ -52,8 +73,18 @@ int get(int key) {
     }
     index = (index + i) % max;
     if (hashtable[index] == key) {
-        return hashtable[index];
+        return index;
     } else {
         return -1;
+    }
+}
+
+void display() {
+    printf("Current state of hash table:\n");
+    for (int i = 0; i < max; i++) {
+        if (hashtable[i] != -1)
+            printf("Index %d: %d\n", i, hashtable[i]);
+        else
+            printf("Index %d: empty\n", i);
     }
 }
