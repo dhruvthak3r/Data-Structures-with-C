@@ -1,8 +1,12 @@
 #include <stdio.h>
 
-void insert(int nums[], int key, int idx);
+void build_heap(int nums[], int key, int idx);
 int parent(int index);
 void swap(int *a, int *b);
+void heapsort(int nums[], int n);
+void heapify(int nums[], int start, int end);
+int left(int index);
+int right(int index);
 
 int main() {
     int n, key;
@@ -12,22 +16,59 @@ int main() {
     printf("Enter the elements:\n");
     for (int i = 0; i < n; i++) {
         scanf("%d", &key);
-        insert(nums, key, i);
+        build_heap(nums, key, i);
     }
-    printf("The elements of the heap are (level-order):\n");
+
+    heapsort(nums, n);
+
+    printf("The sorted elements are:\n");
     for (int i = 0; i < n; i++) {
         printf("%d\n", nums[i]);
     }
+
     return 0;
 }
 
-void insert(int nums[], int key, int idx) {
-    nums[idx] = key; // Place the key at the current index
+void build_heap(int nums[], int key, int idx) {
+    nums[idx] = key;
     int p = parent(idx);
     if (idx > 0 && nums[p] < nums[idx]) {
-        swap(&nums[p], &nums[idx]); // Swap if the parent is smaller
-        insert(nums, nums[p], p);  // Recursively check the parent
+        swap(&nums[p], &nums[idx]);
+        build_heap(nums, nums[p], p);
     }
+}
+
+void heapsort(int nums[], int n) {
+    for (int end = n - 1; end > 0; end--) {
+        swap(&nums[0], &nums[end]);
+        heapify(nums, 0, end);
+    }
+}
+
+void heapify(int nums[], int start, int end) {
+    int left_child = left(start);
+    int right_child = right(start);
+    int max = start;
+
+    if (left_child < end && nums[left_child] > nums[max]) {
+        max = left_child;
+    }
+    if (right_child < end && nums[right_child] > nums[max]) {
+        max = right_child;
+    }
+
+    if (max != start) {
+        swap(&nums[max], &nums[start]);
+        heapify(nums, max, end);
+    }
+}
+
+int left(int index) {
+    return (2 * index) + 1;
+}
+
+int right(int index) {
+    return (2 * index) + 2;
 }
 
 int parent(int index) {
